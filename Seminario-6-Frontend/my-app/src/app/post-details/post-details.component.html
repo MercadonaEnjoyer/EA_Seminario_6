@@ -1,0 +1,36 @@
+<button *ngIf="!update" (click)="updateEdit(true)">Modo Edición</button>
+<button *ngIf="update" (click)="updateEdit(false)">Modo Lectura</button>
+
+<div *ngIf="update">
+  <form [formGroup]="editPostForm" (ngSubmit)="updatePost()">
+
+    <label for="title"> Title:</label>
+        <input type="text" id="title" formControlName="title"><br>
+        <div *ngIf="editPostForm.get('title')?.invalid && (editPostForm.get('title')?.dirty || editPostForm.get('title')?.touched)">
+            <div *ngIf="editPostForm.get('title')?.errors?.['required']" class="required-error">Title es obligatorio.</div>
+          </div>
+      
+      <label for="content">Content:</label>
+      <input type="text" id="content" formControlName="content"><br>
+      <div *ngIf="editPostForm.get('content')?.invalid && (editPostForm.get('content')?.dirty || editPostForm.get('content')?.touched)">
+        <div *ngIf="editPostForm.get('content')?.errors?.['required']" class="required-error">Content es requerido.</div>
+      </div>
+      
+      <label for="author">Author ID:</label>
+      <input type="text" id="author" formControlName="author"><br>
+      <div *ngIf="editPostForm.get('author')?.invalid && (editPostForm.get('author')?.dirty || editPostForm.get('author')?.touched)">
+        <div *ngIf="editPostForm.get('author')?.errors?.['required']" class="required-error">Author es obligatorio.</div>
+      </div>
+    
+    <button *ngIf="update" type="submit" [disabled]="editPostForm.invalid">Update User Details</button> 
+
+  </form>
+</div>
+
+<div *ngIf="post">
+  <div><span>Title:</span> {{post.title}}</div>
+  <div><span>Content:</span> {{post.content}}</div>
+  <div><span>Author:</span> {{post.author}}</div>
+  
+  <button (click)="deselect.emit()">Back to Users</button>
+</div>

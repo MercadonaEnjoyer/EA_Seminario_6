@@ -1,0 +1,39 @@
+<h2>My posts</h2>
+
+<button type="button" *ngIf="!showAddPostForm && !selectedPost && !isPostSelected" (click)="showAddPost(true)">Add new post</button>
+<button type="button" *ngIf="showAddPostForm && !selectedPost && !isPostSelected" (click)="showAddPost(false)">-</button>
+
+<div *ngIf="showAddPostForm && !selectedPost && !isPostSelected">
+    <form [formGroup]="newPostForm" (ngSubmit)="postPost()">
+        
+      <label for="title"> Title:</label>
+      <input type="text" id="title" formControlName="title"><br>
+      <div *ngIf="newPostForm.get('title')?.invalid && (newPostForm.get('title')?.dirty || newPostForm.get('title')?.touched)">
+            <div *ngIf="newPostForm.get('title')?.errors?.['required']" class="required-error">Title es obligatorio.</div>
+      </div>
+      
+      <label for="content">Content:</label>
+      <input type="text" id="content" formControlName="content"><br>
+      <div *ngIf="newPostForm.get('content')?.invalid && (newPostForm.get('content')?.dirty || newPostForm.get('content')?.touched)">
+        <div *ngIf="newPostForm.get('content')?.errors?.['required']" class="required-error">Content es requerido.</div>
+      </div>
+      
+      <label for="author">Author ID:</label>
+      <input type="text" id="author" formControlName="author"><br>
+      <div *ngIf="newPostForm.get('author')?.invalid && (newPostForm.get('author')?.dirty || newPostForm.get('author')?.touched)">
+        <div *ngIf="newPostForm.get('author')?.errors?.['required']" class="required-error">Author es obligatorio.</div>
+      </div>
+      
+      <button type="submit" [disabled]="newPostForm.invalid">Add Post</button> 
+    </form>
+</div>
+
+<ul class="posts" *ngIf="!selectedPost">
+  <li *ngFor="let post of posts">
+    <button type="button" (click)="onSelect(post)">
+      <span  class="pTitle">{{post.title}}</span>
+    </button>
+  </li>
+</ul> 
+
+<app-post-details *ngIf="selectedPost" [post]="selectedPost" (deselect)="deselectPost()" (postUpdated)="onPostUpdated($event)"></app-post-details> 
